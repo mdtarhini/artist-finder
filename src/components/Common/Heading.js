@@ -1,15 +1,14 @@
-const commonClassName = "font-semibold";
 const classNamesPerLevel = {
-  1: "text-3xl lg:text-4xl",
-  2: "text-2xl lg:text-3xl",
-  3: "text-xl",
-  4: "text-lg",
-  5: "text-base",
-  6: "text-base",
+  1: "text-3xl lg:text-4xl font-bold text-green-swap",
+  2: "text-xl md:text-2xl lg:text-3xl font-semibold",
+  3: "text-xl font-semibold",
+  4: "text-lg font-semibold",
+  5: "text-base font-semibold",
+  6: "text-base font-semibold",
 };
 
 const Heading = ({ level, text, className }) => {
-  let compClassName = `${className} ${classNamesPerLevel[level]} ${commonClassName}`;
+  let compClassName = `${className} ${classNamesPerLevel[level]}`;
 
   switch (level) {
     case 1:

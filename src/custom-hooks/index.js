@@ -26,28 +26,35 @@ useMenuToggler
 */
 export const useMenuToggler = () => {
   const menuRef = useRef(null);
-  const [open, setOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+
   const toggle = () => {
-    setOpen((prevState) => !prevState);
+    setIsVisible((prevState) => !prevState);
+  };
+  const hide = () => {
+    setIsVisible(false);
+  };
+  const show = () => {
+    setIsVisible(true);
   };
 
   useEffect(() => {
     const bodyClickEvent = (e) => {
       if (menuRef.current !== null && !menuRef.current.contains(e.target)) {
-        setOpen(false);
+        setIsVisible(false);
       }
     };
 
-    if (open) {
+    if (isVisible) {
       window.addEventListener("click", bodyClickEvent);
     }
 
     return () => {
       window.removeEventListener("click", bodyClickEvent);
     };
-  }, [open, menuRef]);
+  }, [isVisible, menuRef]);
 
-  return [open, toggle, menuRef];
+  return [isVisible, toggle, show, hide, menuRef];
 };
 
 /*
