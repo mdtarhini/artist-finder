@@ -2,7 +2,7 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 const classNamePerType = {
   primary: "rounded-md bg-blue-500 text-white p-2 border-2 border-blue-500",
   secondary: "bg-blue-100 text-blue-500 font-bold text-sm rounded-md px-4 py-2",
-  text: "text-blue-500 p-2 ",
+  text: "text-white p-2 ",
   open: "p-2 rounded-md border-2 border-blue-500 text-blue-500",
   none: "",
 };

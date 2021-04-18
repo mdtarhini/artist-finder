@@ -1,9 +1,11 @@
-import { useLazyQuery, gql } from "@apollo/client";
-import { useEffect, useState } from "react";
+import { useLazyQuery, gql, useReactiveVar } from "@apollo/client";
+import { useEffect, useMemo } from "react";
 import Button from "../Common/Button";
 import SearchSuggestions from "./SearchSuggestions";
 import { FaSearch } from "react-icons/fa";
 import { useMenuToggler } from "../../custom-hooks";
+import debounce from "lodash.debounce";
+import { searchTermVar } from "../../cache";
 
 const GET_SEARCH_SUGGESTIONS = gql`
   query GetArtists($searchValue: String!) {
@@ -11,18 +13,7 @@ const GET_SEARCH_SUGGESTIONS = gql`
       artists(query: $searchValue, first: 8) {
         nodes {
           id
-          name
-        }
-      }
-    }
-  }
-`;
-const SEARCH_ARTISTS = gql`
-  query GetArtists($searchValue: String!) {
-    search {
-      artists(query: $searchValue, first: 18) {
-        nodes {
-          id
+          mbid
           name
         }
       }
@@ -31,10 +22,13 @@ const SEARCH_ARTISTS = gql`
 `;
 
 const Search = () => {
-  const [inputValue, setInputValue] = useState({
-    changedViaKey: false,
-    value: "",
-  });
+  // const [inputValue, setInputValue] = useState({
+  //   changedViaKey: false,
+  //   value: "",
+  // });
+
+  const searchTerm = useReactiveVar(searchTermVar);
+
   const [
     suggestionsVisible,
     ,
@@ -45,71 +39,65 @@ const Search = () => {
 
   const [
     getSearchSuggestions,
-    {
-      loading: suggestionsLoading,
-      error: suggestionsError,
-      data: suggestionsData,
-    },
-  ] = useLazyQuery(GET_SEARCH_SUGGESTIONS);
+    { loading, error, data },
+  ] = useLazyQuery(GET_SEARCH_SUGGESTIONS, { fetchPolicy: "no-cache" });
 
-  const [
-    getArtists,
-    { loading: artistsLoading, error: artistsError, data: artistsData },
-  ] = useLazyQuery(SEARCH_ARTISTS);
-
+  const debouncedSearch = useMemo(
+    () =>
+      debounce((value) => {
+        if (value) {
+          getSearchSuggestions({ variables: { searchValue: value } });
+        }
+      }, 200),
+    [getSearchSuggestions]
+  );
   useEffect(() => {
-    if (inputValue.value) {
-      if (inputValue.changedViaKey) {
-        console.log("yes");
-        getSearchSuggestions({ variables: { searchValue: inputValue.value } });
-      } else {
-        getArtists({ variables: { searchValue: inputValue.value } });
-      }
+    if (!searchTerm.ready) {
+      debouncedSearch(searchTerm.value);
     }
-  }, [inputValue, getArtists, getSearchSuggestions]);
+  }, [searchTerm, debouncedSearch]);
 
-  const onSuggestionClicked = (searchValue) => {
-    setInputValue({ changedViaKey: false, value: searchValue });
+  const onSuggestionClicked = (value) => {
+    searchTermVar({ ready: true, value });
     hideSuggestions();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     hideSuggestions();
-    getArtists({ variables: { searchValue: inputValue.value } });
+    searchTermVar({ ...searchTermVar(), ready: true });
   };
-  if (suggestionsError) return <p>Error :(</p>;
+  if (error) return <p>Error :(</p>;
 
-  console.log(artistsData);
   return (
     <form
-      className="flex items-center  w-full relative"
+      className="flex items-center w-full  relative"
       ref={searchRef}
       onSubmit={handleSubmit}
     >
       <input
         onFocus={showSuggestions}
+        spellCheck={false}
         className="h-16 w-full bg-transparent text-white border-b-2 border-gray-100  text-lg md:text-xl lg:text-2xl focus:outline-none focus:border-green-swap"
         placeholder="Search for an artist..."
-        value={inputValue.value}
+        value={searchTerm.value}
         onChange={(e) => {
-          setInputValue({ changedViaKey: true, value: e.target.value });
+          searchTermVar({ ready: false, value: e.target.value });
         }}
       />
       <Button
         className="absolute text-xl right-2 focus-inside"
         type="text"
         color="green"
-        loading={suggestionsLoading}
       >
         <FaSearch />
       </Button>
-      {suggestionsVisible && (
+      {suggestionsVisible && searchTerm.value && (
         <div className="absolute z-10 top-16 left-0 w-full pt-2">
           <SearchSuggestions
-            inputValue={inputValue.value}
-            options={suggestionsData?.search?.artists?.nodes}
+            options={data?.search?.artists?.nodes}
             onSuggestionClicked={onSuggestionClicked}
+            loading={loading}
           />
         </div>
       )}

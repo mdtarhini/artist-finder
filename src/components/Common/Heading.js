@@ -1,7 +1,7 @@
 const classNamesPerLevel = {
-  1: "text-3xl lg:text-4xl font-bold text-green-swap",
-  2: "text-xl md:text-2xl lg:text-3xl font-semibold",
-  3: "text-xl font-semibold",
+  1: "text-2xl  lg:text-3xl font-bold text-green-swap",
+  2: "text-xl lg:text-2xl font-semibold",
+  3: "text-lg lg:text-xl font-semibold",
   4: "text-lg font-semibold",
   5: "text-base font-semibold",
   6: "text-base font-semibold",

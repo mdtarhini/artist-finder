@@ -2,20 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
-
-const cache = new InMemoryCache({
-  typePolicies: {
-    Query: {
-      fields: {
-        project: {
-          merge: true,
-        },
-      },
-    },
-  },
-});
+import { cache } from "./cache";
 
 const client = new ApolloClient({
   uri: "https://graphbrainz.herokuapp.com/",

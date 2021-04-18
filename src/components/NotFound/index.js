@@ -4,7 +4,7 @@ import AstronautMusician from "./musicAstronaut.png";
 import { HOME_PATH } from "../../routes/paths";
 const NotFound = () => {
   return (
-    <main className="flex flex-col space-y-4 md:space-y-8 h-screen w-screen items-center justify-center bg-gray-900 p-4">
+    <main className="flex flex-col space-y-4 md:space-y-8 h-full w-screen items-center justify-center bg-gray-900 p-4">
       <Heading level={1} text="Oops !" />
       <img
         src={AstronautMusician}

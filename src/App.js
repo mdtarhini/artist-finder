@@ -1,10 +1,10 @@
 //router
 import Routes from "./routes";
-
 const App = () => {
   return (
-    <div className="">
+    <div>
       <Routes />
+      <div id="toast-root"></div>
     </div>
   );
 };
