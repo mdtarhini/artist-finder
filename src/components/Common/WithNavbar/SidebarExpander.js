@@ -16,6 +16,7 @@ const SidebarExpander = () => {
         className="text-xl sm:text-2xl md:hidden"
         onClick={() => sidebarExpandedVar(!sidebarExpandedVar())}
         type="text"
+        title={`${sidebarExpanded ? "hide" : "show"} sidebar`}
       >
         {sidebarExpanded ? <AiOutlineCloseCircle /> : <AiOutlineMenuUnfold />}
       </Button>

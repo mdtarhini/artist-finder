@@ -95,6 +95,7 @@ const Search = () => {
         }}
       />
       <Button className="absolute text-xl right-2 focus-inside" type="text">
+        <span className="sr-only">search icon</span>
         <FaSearch />
       </Button>
       {suggestionsVisible && searchTerm && (
