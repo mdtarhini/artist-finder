@@ -70,7 +70,7 @@ const Album = ({ match }) => {
     return (
       <div>
         <Alert
-          message="There was a problem fetching the necessary data"
+          message="There was a problem fetching the album's information"
           type="error"
         />
       </div>

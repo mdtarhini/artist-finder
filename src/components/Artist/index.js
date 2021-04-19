@@ -165,7 +165,7 @@ const Artist = ({ match }) => {
     return (
       <div>
         <Alert
-          message="There was a problem fetching the necessary data"
+          message="There was a problem fetching the Artist's information"
           type="error"
         />
       </div>
