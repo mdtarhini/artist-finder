@@ -1,3 +1,4 @@
+//sub-components
 import Heading from "../Common/Heading";
 
 const WelcomeMessage = () => {

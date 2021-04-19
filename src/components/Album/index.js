@@ -1,33 +1,13 @@
-import Loader from "../Common/Loader";
-import { useQuery, gql } from "@apollo/client";
+//apollo stuff
+import { useQuery } from "@apollo/client";
+import { ALBUM_DETAILS_QUERY } from "../../Apollo/queries";
+
+//sub-components
+import Alert from "../Common/Alert";
 import Heading from "../Common/Heading";
+import Loader from "../Common/Loader";
 import TracksTable from "./TracksTable";
 import WithNavbar from "../Common/WithNavbar";
-const ALBUM_DETAILS_QUERY = gql`
-  query GET_ALBUM_DETAILS($albumMBID: MBID!) {
-    lookup {
-      release(mbid: $albumMBID) {
-        id
-        date
-        title
-        media {
-          trackCount
-          format
-          title
-          tracks {
-            mbid
-            title
-            length
-            position
-          }
-        }
-        coverArtArchive {
-          front
-        }
-      }
-    }
-  }
-`;
 
 const Album = ({ match }) => {
   const { loading, error, data } = useQuery(ALBUM_DETAILS_QUERY, {
@@ -76,6 +56,7 @@ const Album = ({ match }) => {
     );
   };
 
+  //3 possible scenarios for conditional rendering depending on the data
   const RenderLoading = () => {
     return (
       <div>
@@ -88,7 +69,10 @@ const Album = ({ match }) => {
   const RenderError = () => {
     return (
       <div>
-        <span>Error</span>
+        <Alert
+          message="There was a problem fetching the necessary data"
+          type="error"
+        />
       </div>
     );
   };

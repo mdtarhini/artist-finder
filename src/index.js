@@ -1,13 +1,23 @@
+//react
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
+
+//apollo stuff
 import { ApolloClient } from "@apollo/client";
 import { ApolloProvider } from "@apollo/client/react";
-import { cache } from "./cache";
+import { cache } from "./Apollo/cache";
+
+//others
+import { DB_URI } from "./constants-and-settings";
+
+//Main component (App)
+import App from "./App";
+
+//Main stylesheet
+import "./index.css";
 
 const client = new ApolloClient({
-  uri: "https://graphbrainz.herokuapp.com/",
+  uri: DB_URI,
   cache: cache,
   connectToDevTools: true,
 });

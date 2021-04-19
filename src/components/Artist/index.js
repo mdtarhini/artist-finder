@@ -1,62 +1,23 @@
-import { useQuery, gql } from "@apollo/client";
-import Tag from "../Common/Tag";
-import Heading from "../Common/Heading";
-import RatingDisk from "../Common/RatingDisk";
+//apollo stuff
+import { useQuery } from "@apollo/client";
+import { ARTIST_DETAILS_QUERY } from "../../Apollo/queries";
+
+//sub-components
 import AddToFavorites from "../Common/AddToFavorites";
-import ReactCountryFlag from "react-country-flag";
+import Alert from "../Common/Alert";
+import Heading from "../Common/Heading";
 import ListOfReleases from "./ListOfReleases";
-import { BiFemaleSign, BiMaleSign } from "react-icons/bi";
+import Loader from "../Common/Loader";
+import RatingDisk from "../Common/RatingDisk";
+import ReactCountryFlag from "react-country-flag";
+import Tag from "../Common/Tag";
 import WithNavbar from "../Common/WithNavbar";
 
-import Loader from "../Common/Loader";
-const ARTIST_DETAILS_QUERY = gql`
-  query GetArtistDetails($artistMBID: MBID!) {
-    lookup {
-      artist(mbid: $artistMBID) {
-        name
-        id
-        mbid
-        mediaWikiImages {
-          url
-          descriptionHTML
-        }
-        country
-        disambiguation
-        lifeSpan {
-          begin
-          end
-        }
-        rating {
-          value
-        }
-        tags {
-          edges {
-            node {
-              count
-              name
-            }
-          }
-        }
-        gender
-        type
-        releases {
-          edges {
-            node {
-              mbid
-              id
-              title
-              date
-              media {
-                trackCount
-                format
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`;
+//icons
+import { BiFemaleSign, BiMaleSign } from "react-icons/bi";
+
+//others
+import { MAX_ARTIST_RATING } from "../../constants-and-settings";
 
 const Artist = ({ match }) => {
   const { loading, error, data } = useQuery(ARTIST_DETAILS_QUERY, {
@@ -80,6 +41,7 @@ const Artist = ({ match }) => {
     const imgUrl = mediaWikiImages[0]?.url;
     const imgAlt = mediaWikiImages[0]?.descriptionHTML;
 
+    //the following informations will be displayed in a list style, besides the image on x-large screens and below it elswhere
     const tagNames = tags?.edges
       .filter((edge) => edge.node.count > 0)
       .sort((edgeA, edgeB) => edgeB.node.count - edgeA.node.count)
@@ -129,11 +91,10 @@ const Artist = ({ match }) => {
     };
 
     return (
-      <div className="flex flex-col  space-y-4 xl:flex-row xl:space-x-6 xl:space-y-0 w-full  xl:items-end relative">
-        {/* Image */}
+      <div className="flex flex-col xl:flex-row space-y-4 xl:items-end  xl:space-x-6 xl:space-y-0 w-full relative">
         {imgUrl && (
           <img
-            className=" h-full xl:h-96 object-contain rounded-2xl"
+            className="max-h-96 object-contain rounded-2xl"
             src={imgUrl}
             alt={imgAlt || `A photo of ${name}`}
           />
@@ -169,13 +130,16 @@ const Artist = ({ match }) => {
           )}
           {/* Rating and add to favorites */}
           <div className="flex space-x-4 items-center">
-            {rating?.value && <RatingDisk rating={[rating.value, 5]} />}
+            {rating?.value && (
+              <RatingDisk rating={[rating.value, MAX_ARTIST_RATING]} />
+            )}
             <AddToFavorites name={name} type={type} artistMBID={mbid} />
           </div>
         </div>
       </div>
     );
   };
+
   const RenderReleases = () => {
     const { releases, mbid } = data?.lookup?.artist;
     return (
@@ -189,6 +153,7 @@ const Artist = ({ match }) => {
     );
   };
 
+  //3 possible scenarios for conditional rendering depending on the data
   const RenderLoading = () => {
     return (
       <div className="w-full">
@@ -199,7 +164,10 @@ const Artist = ({ match }) => {
   const RenderError = () => {
     return (
       <div>
-        <span>Error</span>
+        <Alert
+          message="There was a problem fetching the necessary data"
+          type="error"
+        />
       </div>
     );
   };
@@ -225,3 +193,8 @@ const Artist = ({ match }) => {
   );
 };
 export default Artist;
+
+/*
+Notes:
+-The images are to be optimized. check again if there are small size images in the database
+*/

@@ -1,24 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 
 /*
-useIsMonted
-@Description: Return true if the component is mounted
-@Usecase: Useful when a state update is required inside a useEffect
-@parameters: none
-*/
-export const useIsMounted = () => {
-  const isMounted = useRef(true);
-
-  useEffect(() => {
-    return () => {
-      isMounted.current = false;
-    };
-  }, []);
-
-  return isMounted.current;
-};
-
-/*
 useMenuToggler
 @Description: Return a boolean state and a ref for the outer div of a menu pop-up. It takes care of setting event listeners for bodyclicks to close the menu
 @Usecase: For dropdowns, selects, and small screen menus

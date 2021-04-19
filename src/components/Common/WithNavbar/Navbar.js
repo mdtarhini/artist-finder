@@ -1,18 +1,23 @@
-import Logo from "./logo_swapart.svg";
-import Navigation from "./Navigation";
+//react-router
 import { HOME_PATH } from "../../../routes/paths";
-
 import { Link } from "react-router-dom";
+
+//sub-components
+import Navigation from "./Navigation";
+import SidebarExpander from "./SidebarExpander";
+
+//The svg logo
+import Logo from "./logo_swapart.svg";
+
 const Navbar = () => {
   return (
-    <div className="flex md:space-x-28 lg:space-x-44 h-full w-full p-2 items-center justify-between md:justify-start">
-      <Link
-        to={HOME_PATH}
-        className="h-2/3 focus:outline-none hover:opacity-80"
-      >
-        <img src={Logo} className="h-full" alt="Swapart Logo" />
+    <div className="flex items-center justify-between md:space-x-28 lg:space-x-44 h-full w-full p-2 ">
+      <Link to={HOME_PATH} className="focus:outline-none transform-opacity">
+        <img src={Logo} className="w-24 md:w-28 lg:w-32" alt="Swapart Logo" />
       </Link>
       <Navigation />
+
+      <SidebarExpander />
     </div>
   );
 };

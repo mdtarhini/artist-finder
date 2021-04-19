@@ -1,44 +1,64 @@
-import { GiMicrophone } from "react-icons/gi";
+//apollo stuff
 import { useReactiveVar } from "@apollo/client";
-import { favoritesVar } from "../../../cache";
-import { HiUserGroup, HiUser } from "react-icons/hi";
+import { favoritesVar } from "../../../Apollo/cache";
 
+//sub-components
 import Category from "./Category";
+
+//icons
+import { GiMicrophone } from "react-icons/gi";
+import { HiUserGroup, HiUser } from "react-icons/hi";
+import { AiFillHeart } from "react-icons/ai";
+
 const Favorites = () => {
   const favorites = useReactiveVar(favoritesVar);
 
-  const favoritesCategories = Object.keys(favorites).reduce(
-    (acc, currentKey) => {
-      if (favorites[currentKey].type === "Person") {
-        acc["persons"][currentKey] = favorites[currentKey];
-      } else if (favorites[currentKey].type === "Group") {
-        acc["groups"][currentKey] = favorites[currentKey];
-      } else {
-        acc["others"][currentKey] = favorites[currentKey];
-      }
-      return acc;
+  //Separate the favorites in three categories according to their types (items with no types will be added in the last)
+  const categories = {
+    Person: {
+      label: "Artists",
+      items: {},
+      icon: <HiUser />,
     },
-    { persons: {}, groups: {}, others: {} }
-  );
+    Group: {
+      label: "Artist Groups",
+      items: {},
+      icon: <HiUserGroup />,
+    },
+    Other: {
+      label: "Others",
+      items: {},
+      icon: <GiMicrophone />,
+    },
+  };
+  Object.keys(favorites).forEach((favoriteKey) => {
+    const type = favorites[favoriteKey].type;
+    if (categories.hasOwnProperty(type)) {
+      categories[type].items[favoriteKey] = favorites[favoriteKey];
+    } else {
+      categories["Other"].items[favoriteKey] = favorites[favoriteKey];
+    }
+  });
 
   return (
-    <div className="pb-24">
-      <div className="flex flex-col overflow-y-auto">
-        <Category
-          items={favoritesCategories["persons"]}
-          label="Artists"
-          icon={<HiUser />}
-        />
-        <Category
-          items={favoritesCategories["groups"]}
-          label="Artist Groups"
-          icon={<HiUserGroup />}
-        />
-        <Category
-          items={favoritesCategories["others"]}
-          label="Others"
-          icon={<GiMicrophone />}
-        />
+    <div className="flex flex-col space-y-6 h-full w-full py-10">
+      <div className="flex space-x-2 items-center px-2 text-lg">
+        <AiFillHeart className="text-2xl text-green-swap" />
+        <h2 className="font-semibold">My Favorites</h2>
+      </div>
+      <div className="flex flex-col">
+        {Object.keys(categories).map((categoryKey) => {
+          const { label, icon, items } = categories[categoryKey];
+
+          return (
+            <Category
+              key={categoryKey}
+              items={items}
+              label={label}
+              icon={icon}
+            />
+          );
+        })}
       </div>
     </div>
   );

@@ -1,19 +1,20 @@
+//icons
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+
+//define default classnames for the different types. The className props will be used in addition
 const classNamePerType = {
-  primary: "rounded-md bg-blue-500 text-white p-2 border-2 border-blue-500",
-  secondary: "bg-blue-100 text-blue-500 font-bold text-sm rounded-md px-4 py-2",
+  primary: "rounded-md bg-green-swap text-white p-2 border-2 border-green-600",
   text: "text-white p-2 ",
-  open: "p-2 rounded-md border-2 border-blue-500 text-blue-500",
+  open: "p-2 rounded-md border-2 border-green-swap text-green-swap",
   none: "",
 };
 
 const transitionClassNamePerType = {
-  primary: "transition duration-300 ease-in-out transform hover:bg-blue-400",
-  secondary:
-    "transition duration-300 ease-in-out transform hover:bg-blue-500 hover:text-white",
-  text: "transition duration-300 ease-in-out hover:text-blue-700",
+  primary:
+    "transition duration-300 ease-in-out transform hover:bg-text-green-600",
+  text: "transition duration-300 ease-in-out hover:text-green-swap",
   open:
-    "transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white",
+    "transition duration-300 ease-in-out hover:bg-green-swap hover:text-white",
   none: "transition duration-300 ease-in-out hover:opacity-70",
 };
 
@@ -26,7 +27,6 @@ const Button = ({
   onClick,
   disabled = false,
   loading = false,
-  color,
   title = "",
   type = "primary",
 }) => {
@@ -36,9 +36,6 @@ const Button = ({
   } ${className} ${
     disabled ? "cursor-not-allowed" : transitionClassNamePerType[type]
   }`;
-  if (color) {
-    compClassName = compClassName.replaceAll("blue", color);
-  }
   return (
     <button
       className={compClassName}

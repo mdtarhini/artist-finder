@@ -1,4 +1,6 @@
+//icons
 import { BsSearch, BsMusicNote } from "react-icons/bs";
+
 const Intro = () => {
   return (
     <div className="flex items-center justify-center py-20 md:py-48 w-full text-9xl text-gray-200 ">

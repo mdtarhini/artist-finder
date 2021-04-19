@@ -1,36 +1,25 @@
-import { AiFillHeart } from "react-icons/ai";
-import { useState } from "react";
-import Favorites from "./Favorites";
-import { AiOutlineMenuUnfold, AiOutlineCloseCircle } from "react-icons/ai";
-import Button from "../Common/Button";
-const Sidebar = () => {
-  const [sidebarVisible, setSidebarVisible] = useState(false);
-  const toggleSidebar = () => {
-    setSidebarVisible(!sidebarVisible);
-  };
-  return (
-    <>
-      <Button
-        className="fixed z-30 top-2 right-2 text-3xl md:hidden text-white"
-        onClick={toggleSidebar}
-        type="text"
-      >
-        {sidebarVisible ? <AiOutlineCloseCircle /> : <AiOutlineMenuUnfold />}
-      </Button>
+//apollo stuff
+import { sidebarExpandedVar } from "../../Apollo/cache";
+import { useReactiveVar } from "@apollo/client";
 
-      <aside
-        className={`z-10 fixed top-16 left-0 h-full md:w-60 lg:w-80 overflow-auto bg-gray-900 text-white shadow-2xl md:border-r border-gray-800 
-    ${sidebarVisible ? "w-full" : "hidden md:block"}`}
-      >
-        <div className="flex flex-col space-y-6 h-full w-full py-2 pt-10">
-          <div className="flex space-x-2 items-center text-lg px-2">
-            <AiFillHeart className="text-green-swap text-2xl" />
-            <h2 className="font-semibold">My Favorites</h2>
-          </div>
-          <Favorites />
-        </div>
-      </aside>
-    </>
+//sub-components
+import Favorites from "./Favorites";
+
+const Sidebar = () => {
+  const sidebarExpanded = useReactiveVar(sidebarExpandedVar);
+  return (
+    <aside
+      className={`fixed z-10 left-0 top-0 h-full pt-16 md:w-60 lg:w-80 overflow-auto bg-gray-900 text-white md:border-r border-gray-800 
+${sidebarExpanded ? "w-full" : "hidden md:block"}`}
+    >
+      <Favorites />
+    </aside>
   );
 };
 export default Sidebar;
+
+/*
+Notes:
+-pt-16 is added so the sidebar is not hidden by the navbar
+-sidebarExpanded is state variable (apollo-client) and will be toggled in the navbar component
+*/

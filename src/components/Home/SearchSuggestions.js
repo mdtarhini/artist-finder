@@ -1,7 +1,8 @@
+//icons
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const SearchSuggestions = ({ options, onSuggestionClicked, loading }) => {
-  const RenderSuggstions = () => {
+  const RenderSuggestions = () => {
     return (
       <ul>
         {options.map((item, index) => {
@@ -31,11 +32,11 @@ const SearchSuggestions = ({ options, onSuggestionClicked, loading }) => {
   return (
     <div className="w-full max-h-96 overflow-auto rounded-2xl bg-gray-700 shadow-md">
       {options ? (
-        RenderSuggstions()
+        RenderSuggestions()
       ) : (
         <div className="h-20 flex items-center justify-center">
           {loading && (
-            <AiOutlineLoading3Quarters className="text-green-swap animate-spin text-xl" />
+            <AiOutlineLoading3Quarters className="animate-spin text-xl text-green-swap" />
           )}
         </div>
       )}

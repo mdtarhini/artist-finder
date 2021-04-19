@@ -1,5 +1,9 @@
-import { formatSeconds } from "../../helpers";
+//sub-components
 import Heading from "../Common/Heading";
+
+//others
+import { formatSeconds } from "../../helpers";
+
 const TracksTable = ({ title, tracks }) => {
   if (!tracks) return null;
   return (
