@@ -2,6 +2,8 @@
 import { Link, withRouter } from "react-router-dom";
 import { HOME_PATH, ARTIST_PATH } from "../../../routes/paths";
 
+//apollo stuff
+import { sidebarExpandedVar } from "../../../Apollo/cache";
 //icons
 import { BiAlbum, BiHome, BiUser } from "react-icons/bi";
 import { MdKeyboardArrowRight } from "react-icons/md";
@@ -53,6 +55,7 @@ const Navigation = ({ match }) => {
                     title={item.title}
                     to={item.to}
                     className="hover:text-green-swap"
+                    onClick={() => sidebarExpandedVar(false)}
                   >
                     {item.icon}
                   </Link>

@@ -16,7 +16,7 @@ const SidebarExpander = () => {
   return (
     <div>
       <Button
-        className="text-xl sm:text-2xl md:hidden"
+        className="text-2xl md:hidden"
         onClick={handleClick}
         type="text"
         title={`${sidebarExpanded ? "hide" : "show"} sidebar`}

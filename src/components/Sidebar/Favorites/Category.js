@@ -5,6 +5,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ARTIST_PATH } from "../../../routes/paths";
 
+//apollo stuff
+import { sidebarExpandedVar } from "../../../Apollo/cache";
+
 //icons
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { AiOutlineStop } from "react-icons/ai";
@@ -23,6 +26,7 @@ const Category = ({ label, icon, items }) => {
               <li
                 key={itemKey}
                 className="rounded-md p-1 hover:text-green-swap cursor-pointer"
+                onClick={() => sidebarExpandedVar(false)}
               >
                 <Link to={`${ARTIST_PATH}/${itemKey}`}>
                   <span> {item.name}</span>

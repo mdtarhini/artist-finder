@@ -38,7 +38,7 @@ const RatingDisk = ({ rating }) => {
           strokeDashoffset="25"
         ></circle>
       </svg>
-      <span className="absolute">{rating[0]}</span>
+      <span className="absolute">{rating[0].toFixed(1)}</span>
     </div>
   );
 };

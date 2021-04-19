@@ -30,7 +30,7 @@ const SearchSuggestions = ({ options, onSuggestionClicked, loading }) => {
   };
 
   return (
-    <div className="w-full max-h-96 overflow-auto rounded-2xl bg-gray-700 shadow-md">
+    <div className="w-full max-h-96 overflow-auto rounded-2xl bg-gray-800 shadow-md">
       {options ? (
         RenderSuggestions()
       ) : (
