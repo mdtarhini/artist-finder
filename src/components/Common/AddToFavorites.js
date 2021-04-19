@@ -35,11 +35,12 @@ const AddToFavorites = ({ artistMBID, name, type }) => {
   }, [isFavorite, showToast]);
 
   const toggleFavorite = () => {
-    if (isFavorite) {
-      favoritesVar(_.omit(favoritesVar(), artistMBID));
-    } else {
-      favoritesVar({ ...favoritesVar(), [artistMBID]: { name, type } });
-    }
+    const updatedFavorites = isFavorite
+      ? _.omit(favoritesVar(), artistMBID)
+      : { ...favoritesVar(), [artistMBID]: { name, type } };
+
+    favoritesVar(updatedFavorites);
+    localStorage.setItem("favorites", JSON.stringify(updatedFavorites));
   };
 
   return (

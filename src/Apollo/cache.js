@@ -4,7 +4,9 @@ import { InMemoryCache, makeVar } from "@apollo/client";
 import { relayStylePagination } from "@apollo/client/utilities";
 
 //local state variables
-export const favoritesVar = makeVar({});
+export const favoritesVar = makeVar(
+  JSON.parse(localStorage.getItem("favorites")) || {}
+);
 export const searchTermVar = makeVar("");
 export const submittedSearchTermVar = makeVar("");
 export const sidebarExpandedVar = makeVar(false);

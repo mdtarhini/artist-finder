@@ -9,12 +9,15 @@ import Button from "../Button";
 import { AiOutlineMenuUnfold, AiOutlineCloseCircle } from "react-icons/ai";
 
 const SidebarExpander = () => {
+  const handleClick = () => {
+    sidebarExpandedVar(!sidebarExpandedVar());
+  };
   const sidebarExpanded = useReactiveVar(sidebarExpandedVar);
   return (
     <div>
       <Button
         className="text-xl sm:text-2xl md:hidden"
-        onClick={() => sidebarExpandedVar(!sidebarExpandedVar())}
+        onClick={handleClick}
         type="text"
         title={`${sidebarExpanded ? "hide" : "show"} sidebar`}
       >
